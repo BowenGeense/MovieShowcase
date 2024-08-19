@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import Slide from './Components/Slide.svelte';
 	import type { Movie } from '/Interfaces/Movie';
 	import type { Franchise } from '/Interfaces/Franchise';
-	export let bearer: string;
+	import '/global.css';
+	export let bearer: string
 
 	let movies: Movie[] = [];
+	let currentIndex: number = 0;
 
 	async function fetchFranchiseData() {
 		try {
@@ -25,7 +28,6 @@
 			const franchise: Franchise = data.data;
 			console.log('franchise', franchise);
 
-			// Fetch movie details for each entity with a movieId
 			const moviePromises = franchise.entities
 					.filter(entity => entity.movieId)
 					.map(async entity => {
@@ -54,73 +56,20 @@
 		}
 	}
 
+	function nextMovie() {
+		currentIndex = (currentIndex + 1) % movies.length;
+	}
+
+	function prevMovie() {
+		currentIndex = (currentIndex - 1 + movies.length) % movies.length;
+	}
+
 	onMount(fetchFranchiseData);
 </script>
 
 <main>
 	{#if movies.length > 0}
-		{#each movies as movie}
-			<div>
-				<img src={movie.image} alt={movie.name} />
-				<h2>{movie.name}</h2>
-			</div>
-		{/each}
-	{:else}
+		<Slide movie={movies[currentIndex]} on:next={nextMovie} on:prev={prevMovie} />	{:else}
 		<h1>Loading...</h1>
 	{/if}
 </main>
-
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #000000;
-		text-transform: uppercase;
-		font-size: 6em;
-		font-weight: 1000;
-		position: relative;
-		overflow: hidden;
-		white-space: nowrap;
-		text-shadow:
-				-3px -3px 0 #ffe81f,
-				3px -3px 0 #ffe81f,
-				-3px 3px 0 #ffe81f,
-				3px 3px 0 #ffe81f; /* Font border effect */
-	}
-
-	h1::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-		animation: loading 2s infinite;
-	}
-
-	@keyframes loading {
-		0% {
-			transform: translateX(-100%);
-		}
-		100% {
-			transform: translateX(100%);
-		}
-	}
-
-	img {
-		max-width: 100%;
-		height: auto;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
