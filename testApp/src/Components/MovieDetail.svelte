@@ -18,9 +18,6 @@
         <h2>Release Year: {movie.year}</h2>
         <h2>Duration: {movie.runtime} minutes</h2>
     </div>
-    <div class="old-school-ad">
-        Now on 4K, Blu-Ray & Digital
-    </div>
 </div>
 
 <style>
@@ -43,6 +40,7 @@
     .movie-detail img {
         max-width: 80%;
         max-height: 60%;
+        border-radius: 10px;
         object-fit: contain;
     }
 
@@ -52,18 +50,5 @@
 
     .additional-info {
         text-align: center;
-    }
-
-    .old-school-ad {
-        margin-top: 20px;
-        padding: 10px 20px;
-        background: #318edc;
-        color: white;
-        display: none;
-        font-size: 1.5rem;
-        font-weight: bold;
-        border-radius: 5px;
-        text-align: center;
-        position: relative;
     }
 </style>

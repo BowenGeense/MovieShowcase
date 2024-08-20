@@ -27,15 +27,12 @@
     </div>
     <div class="navbar-right">
         <span class="nav-item">Shop the Collection</span>
-        <i class="fa-light fa-magnifying-glass nav-icon"></i>
-        <i class="fa-light fa-shopping-cart nav-icon"></i>
-        <i class="fal fa-user nav-icon"></i>
         <i class="fa-light fa-bars nav-icon" on:click={toggleSidebar}></i>
     </div>
 </nav>
 
 <div class="sidebar-wrapper">
-    <Sidebar {sidebarOpen} on:franchiseSelected={selectFranchise} />
+    <Sidebar {sidebarOpen} on:franchiseSelected={selectFranchise} {selectFranchise} />
 </div>
 
 <style>
@@ -44,13 +41,16 @@
         justify-content: space-between;
         align-items: center;
         padding: 20px 30px;
+        background-size: cover;
         background-color: white;
         color: black;
         border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .navbar-logo {
         width: 150px;
+        border-radius: 10px;
         height: auto;
     }
 

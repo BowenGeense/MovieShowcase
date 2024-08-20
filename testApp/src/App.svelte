@@ -69,8 +69,8 @@
 			showDetail = false;
 			setTimeout(() => {
 				nextMovie();
-			}, 10000);
-		}, 30000);
+			}, 7000);
+		}, 20000);
 	}
 
 	function backToGallery() {
@@ -78,8 +78,7 @@
 	}
 
 	function handleFranchiseSelected(event) {
-		console.log('Franchise selected:', event.detail.id.detail.id);
-		franchiseId = event.detail.id.detail.id;
+		franchiseId = event.detail.id;
 		fetchFranchiseData(franchiseId);
 	}
 
@@ -87,7 +86,7 @@
 		fetchFranchiseData(franchiseId);
 		setTimeout(() => {
 			nextMovie();
-		}, 10000);
+		}, 7000);
 	});
 </script>
 
