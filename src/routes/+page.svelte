@@ -12,7 +12,7 @@
     let currentIndex: number = -1;
     let showDetail = false;
     let currentMovie = movies[currentIndex];
-    let franchiseId: number = 17; // Default to Star Wars
+    let franchiseId: number;
 
     $: {
         const { movies: loadedMovies } = $page.data;
