@@ -1,17 +1,17 @@
-<!-- NavBar.svelte -->
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
     import Sidebar from './Sidebar.svelte';
 
     const dispatch = createEventDispatcher();
-    let logoPath = "/images/movieshowcase.jpeg";
+    let logoPath = '/images/movieshowcase.jpeg';
     let sidebarOpen = false;
+    let toggleButton;
 
     function selectFranchise(id) {
         if (id === 17) {
-            logoPath = "/images/movieshowcase.jpeg";
+            logoPath = '/images/movieshowcase.jpeg';
         } else if (id === 4) {
-            logoPath = "/images/marvel_logo.jpeg";
+            logoPath = '/images/marvel_logo.jpeg';
         }
         dispatch('franchiseSelected', { id });
     }
@@ -27,12 +27,12 @@
     </div>
     <div class="navbar-right">
         <span class="nav-item">Shop the Collection</span>
-        <i class="fa-light fa-bars nav-icon" on:click={toggleSidebar}></i>
+        <i bind:this={toggleButton} class="fa-light fa-bars nav-icon" on:click={toggleSidebar}></i>
     </div>
 </nav>
 
 <div class="sidebar-wrapper">
-    <Sidebar {sidebarOpen} on:franchiseSelected={selectFranchise} {selectFranchise} />
+    <Sidebar {sidebarOpen} {toggleButton} on:franchiseSelected={selectFranchise} {selectFranchise} />
 </div>
 
 <style>

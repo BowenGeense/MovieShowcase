@@ -1,10 +1,11 @@
-<!-- Sidebar.svelte -->
 <script lang="ts">
     import { createEventDispatcher, onMount, onDestroy } from 'svelte';
     export let sidebarOpen: boolean;
+    export let toggleButton;
     export let selectFranchise: (id: number) => void;
 
     const dispatch = createEventDispatcher();
+    let sidebar;
 
     function handleSelectFranchise(id) {
         selectFranchise(id);
@@ -12,7 +13,7 @@
     }
 
     function handleClickOutside(event) {
-        if (!event.target.closest('.sidebar, .fa-bars')) {
+        if (!sidebar.contains(event.target) && !toggleButton.contains(event.target)) {
             sidebarOpen = false;
         }
     }
@@ -30,7 +31,7 @@
     });
 </script>
 
-<div class="sidebar" class:open={sidebarOpen}>
+<div bind:this={sidebar} class="sidebar" class:open={sidebarOpen}>
     <div class="icons">
         <i class="fa-light fa-magnifying-glass nav-icon"></i>
         <i class="fa-light fa-shopping-cart nav-icon"></i>
@@ -64,7 +65,6 @@
         color: black;
         display: block;
         transition: background-color 0.3s ease;
-        font-family: Crimson-Text;
     }
 
     .sidebar a:hover {

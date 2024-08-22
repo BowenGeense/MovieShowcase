@@ -1,4 +1,3 @@
-<!-- App.svelte -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Gallery from './Components/Gallery.svelte';
@@ -8,17 +7,21 @@
 	import type { Movie } from '/Interfaces/Movie';
 	import type { Franchise } from '/Interfaces/Franchise';
 
-	export let bearer: string;
+	const apiUrl = '__API_URL__';
+	let bearer = apiUrl;
+
+	export let apiBaseURL: string;
 
 	let movies: Movie[] = [];
 	let currentIndex: number = -1;
-	let showDetail: boolean = false;
-	let currentMovie: Movie = null;
+	let showDetail = false;
+	let currentMovie = movies[currentIndex];
 	let franchiseId: number = 17; // Default to Star Wars
 
-	async function fetchFranchiseData(id: number) {
+	async function fetchFranchiseData(id: number) : Promise<Movie[]> {
 		try {
-			const response = await fetch(`https://api4.thetvdb.com/v4/lists/${id}/extended`, {
+			console.log( 'bearer HERE : ' + apiUrl);
+			const response = await fetch(`${apiBaseURL}lists/${id}/extended`, {
 				method: 'GET',
 				headers: {
 					'accept': 'application/json',
@@ -37,7 +40,7 @@
 			const moviePromises = franchise.entities
 					.filter(entity => entity.movieId)
 					.map(async entity => {
-						const movieResponse = await fetch(`https://api4.thetvdb.com/v4/movies/${entity.movieId}`, {
+						const movieResponse = await fetch(`${apiBaseURL}movies/${entity.movieId}/extended?meta=translations`, {
 							method: 'GET',
 							headers: {
 								'accept': 'application/json',
@@ -49,9 +52,12 @@
 							console.error(`Failed to fetch movie data for ID ${entity.movieId}:`, movieResponse.statusText);
 							return null;
 						}
-
 						const movieData = await movieResponse.json();
-						return movieData.data;
+						const movie: Movie = movieData.data;
+
+						console.log('Fetched movie:', movie);
+
+						return movie;
 					});
 
 			const movieResults = await Promise.all(moviePromises);
@@ -62,15 +68,13 @@
 	}
 
 	function nextMovie() {
-		currentIndex = (currentIndex + 1) % movies.length;
-		currentMovie = movies[currentIndex];
-		showDetail = true;
-		setTimeout(() => {
-			showDetail = false;
-			setTimeout(() => {
-				nextMovie();
-			}, 7000);
-		}, 20000);
+		setInterval(() => {
+			if(!showDetail) {
+				currentIndex = (currentIndex + 1) % movies.length;
+			}
+			currentMovie = movies[currentIndex];
+			showDetail = !showDetail;
+		}, 5000);
 	}
 
 	function backToGallery() {

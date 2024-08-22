@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher, onMount, onDestroy } from 'svelte';
     import type { Movie } from '../Interfaces/Movie';
     import { scale } from 'svelte/transition';
 
@@ -9,14 +9,35 @@
     function backToGallery() {
         dispatch('backToGallery');
     }
+
+    function getEnglishDescription(translations = movie.overviewTranslations) {
+        const englishTranslation = translations.find(translation => translation.language === 'eng');
+        return englishTranslation ? englishTranslation.overview : 'Description not available';
+    }
+    const englishDescription = getEnglishDescription(movie.overviewTranslations);
+
+    function handleKeydown(event: KeyboardEvent) {
+        if (event.key === 'Escape') {
+            backToGallery();
+        }
+    }
+    onMount(() => {
+        window.addEventListener('keydown', handleKeydown);
+    });
+
+    onDestroy(() => {
+        window.removeEventListener('keydown', handleKeydown);
+    });
 </script>
 
-<div class="movie-detail" on:click={backToGallery} in:scale={{ duration: 500 }} out:scale={{ duration: 500 }}>
-    <img src={movie.image} alt={movie.name} />
+<div class="movie-detail" role="button" on:click={backToGallery} in:scale={{ duration: 500 }}
+     out:scale={{ duration: 500 }}>
+    <img src={movie.image} alt={movie.name}/>
     <h2>{movie.name}</h2>
     <div class="additional-info">
         <h2>Release Year: {movie.year}</h2>
         <h2>Duration: {movie.runtime} minutes</h2>
+        <p>{englishDescription}</p>
     </div>
 </div>
 

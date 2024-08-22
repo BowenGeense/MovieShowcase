@@ -24,10 +24,10 @@
 
 <div class="gallery">
     {#each movies as movie}
-        <div class="movie" on:click={(event) => showDetail(movie, event)} in:fly={getFlyParams} out:fly={getFlyParams}>
+        <div class="movie" role="button" on:click={(event) => showDetail(movie, event)} in:fly={getFlyParams} out:fly={getFlyParams}>
             <img src={movie.image} alt={movie.name} />
-            <h3>{movie.name}</h3>
-            <h2> Released {movie.year}</h2>
+            <h2>{movie.name}</h2>
+            <span>Released {movie.year}</span>
         </div>
     {/each}
 </div>
@@ -66,18 +66,18 @@
     }
 
     .movie h2 {
+        margin: 5px 0;
+        font-size: 1rem;
+        font-weight: 900;
+        color: #333;
+    }
+
+    .movie span {
         margin: 10px 0;
         font-size: 1rem;
         font-weight: 100;
         font-style: italic;
         color: #757575;
-    }
-
-    .movie h3 {
-        margin: 5px 0;
-        font-size: 1rem;
-        font-weight: 900;
-        color: #333;
     }
 
     @media (max-width: 768px) {
