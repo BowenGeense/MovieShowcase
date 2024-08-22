@@ -25,6 +25,11 @@ Before running the code, ensure you have the following installed:
     ```sh
     npm install dotenv
     ```
+4**Install svelte-kit:**
+
+    ```sh
+    npm install svelte-kit
+    ```
 
 ## Environment Setup
 
