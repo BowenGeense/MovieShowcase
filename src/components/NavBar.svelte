@@ -1,8 +1,8 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
     import Sidebar from './Sidebar.svelte';
-    import img from '$lib/image/movieshowcase.jpeg';
-    import img2 from '$lib/image/marvel_logo.jpeg';
+    import img from '$lib/image/Nav_Bar_Logo_For_StarWars_Franchise.jpeg';
+    import img2 from '$lib/image/Nav_Bar_Logo_For_Marvel_Franchise.jpeg';
 
     const dispatch = createEventDispatcher();
 
@@ -28,7 +28,7 @@
     }
 
     function handleKeydown(event: KeyboardEvent) {
-        if (event.key === 'Enter' || event.key === ' ') {
+        if (event.key === 'Enter' || event.code === 'Space') {
             toggleSidebar();
         }
     }
@@ -36,7 +36,7 @@
 
 <nav class="navbar" aria-label="Main Navigation">
     <div class="navbar-left">
-        <img src={logoPath} alt="TVDB Logo" class="navbar-logo" />
+        <img src={logoPath} alt="Franchise-Logo" class="navbar-logo" />
     </div>
     <div class="navbar-right">
         <span class="nav-item">Shop the Collection</span>

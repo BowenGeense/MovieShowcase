@@ -13,13 +13,13 @@
         sidebarOpen = !sidebarOpen;
     }
 
-    function closeSidebar() {
+    function toggleSidebar() {
         sidebarOpen = !sidebarOpen;
     }
 
     function handleKeydown(event: KeyboardEvent) {
         if (event.key === 'Escape' || event.key === 'Enter' || event.key === ' ') {
-            closeSidebar();
+            toggleSidebar();
         }
     }
 </script>
@@ -29,7 +29,7 @@
         <i class="fa-light fa-magnifying-glass nav-icon"></i>
         <i class="fa-light fa-shopping-cart nav-icon"></i>
         <i class="fal fa-user nav-icon"></i>
-        <i bind:this={toggleButton} class="fal fa-xmark nav-icon" role="button" tabindex="-1" on:click={closeSidebar} on:keydown={handleKeydown}></i>
+        <i bind:this={toggleButton} class="fal fa-xmark nav-icon" role="button" tabindex="-1" on:click={toggleSidebar} on:keydown={handleKeydown}></i>
     </div>
     <button on:click={() => handleSelectFranchise(17)}>Star Wars</button>
     <button on:click={() => handleSelectFranchise(4)}>Marvel</button>

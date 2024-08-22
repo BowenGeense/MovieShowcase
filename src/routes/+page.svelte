@@ -9,7 +9,7 @@
     import { goto } from '$app/navigation';
 
     let movies: Movie[] = [];
-    let currentIndex: number = -1;
+    let currentIndex = -1;
     let showDetail = false;
     let currentMovie = movies[currentIndex];
     let franchiseId: number;

@@ -17,7 +17,7 @@
     const englishDescription = getEnglishDescription(movie.overviewTranslations);
 
     function handleKeydown(event: KeyboardEvent) {
-        if (event.key === 'Escape' || event.key === 'Enter' || event.key === ' ') {
+        if (event.key === 'Escape' || event.key === 'Enter' || event.code === 'Space') {
             backToGallery();
         }
     }
