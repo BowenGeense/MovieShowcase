@@ -1,7 +1,8 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount, onDestroy } from 'svelte';
+    import { onMount, onDestroy } from 'svelte';
+    import { createEventDispatcher } from 'svelte';
     import type { Movie } from '../interfaces/Movie';
-    import { scale } from 'svelte/transition';
+    import type { OverviewTranslation } from '../interfaces/OverviewTranslation';
 
     export let movie: Movie;
     const dispatch = createEventDispatcher();
@@ -10,11 +11,12 @@
         dispatch('backToGallery');
     }
 
-    function getEnglishDescription(translations = movie.overviewTranslations) {
+    const englishOverview = getEnglishOverview(movie.translations.overviewTranslations);
+
+    function getEnglishOverview(translations: OverviewTranslation[]) {
         const englishTranslation = translations.find(translation => translation.language === 'eng');
         return englishTranslation ? englishTranslation.overview : 'Description not available';
     }
-    const englishDescription = getEnglishDescription(movie.overviewTranslations);
 
     function handleKeydown(event: KeyboardEvent) {
         if (event.key === 'Escape' || event.key === 'Enter' || event.code === 'Space') {
@@ -30,13 +32,12 @@
     });
 </script>
 
-<div class="movie-detail" role="button" tabindex="0" on:click={backToGallery} on:keydown={handleKeydown} in:scale={{ duration: 500 }} out:scale={{ duration: 500 }}>
+<div class="movie-detail" role="button" tabindex="0" on:click={backToGallery} on:keydown={handleKeydown}>
     <img src={movie.image} alt={movie.name}/>
     <h2>{movie.name}</h2>
     <div class="additional-info">
-        <h2>Release Year: {movie.year}</h2>
-        <h2>Duration: {movie.runtime} minutes</h2>
-        <p>{englishDescription}</p>
+        <h2>Release Year: {movie.year},  Duration: {movie.runtime} </h2>
+        <p class="overview">{englishOverview}</p>
     </div>
 </div>
 
@@ -65,10 +66,19 @@
     }
 
     .movie-detail h2 {
-        margin: 10px 0;
+        margin: 5px 0;
+        font-size: 1.2em;
     }
 
     .additional-info {
         text-align: center;
+        max-width: 80%;
+        margin: 0 auto;
+    }
+
+    .overview {
+        margin: 10px 0;
+        padding: 0 20px;
+        text-align: justify;
     }
 </style>

@@ -12,7 +12,7 @@
     }
 
     function handleKeydown(event: KeyboardEvent, movie: Movie) {
-        if (event.key === 'Enter' || event.key === ' ') {
+        if (event.key === 'Enter' || event.code === 'Space') {
             showDetail(movie, event as unknown as MouseEvent);
         }
     }

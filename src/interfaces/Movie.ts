@@ -13,4 +13,9 @@ export interface Movie {
     status: { id: number; name: string; recordType: string; keepUpdated: boolean };
     lastUpdated: string;
     year: string;
+    translations: {
+        nameTranslations: string[];
+        overviewTranslations: OverviewTranslation[];
+        aliases: { language: string; name: string }[];
+    };
 }

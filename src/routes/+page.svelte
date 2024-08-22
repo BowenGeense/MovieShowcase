@@ -11,7 +11,7 @@
     let movies: Movie[] = [];
     let currentIndex = -1;
     let showDetail = false;
-    let currentMovie = movies[currentIndex];
+    let currentMovie: Movie | undefined;
     let franchiseId: number;
 
     $: {
@@ -27,14 +27,15 @@
         setInterval(() => {
             if (!showDetail) {
                 currentIndex = (currentIndex + 1) % movies.length;
+                currentMovie = movies[currentIndex];
             }
-            currentMovie = movies[currentIndex];
             showDetail = !showDetail;
         }, 20000);
     }
 
     function backToGallery() {
         showDetail = false;
+        currentMovie = undefined;
     }
 
     function handleFranchiseSelected(event: any) {

@@ -42,8 +42,17 @@ export const load = async ({ url }: Parameters<ServerLoad>[0]) => {
                     return null;
                 }
                 const movieData = await movieResponse.json();
-                const movie: Movie = movieData.data;
-
+                const movie: Movie = {
+                    ...movieData.data,
+                    translations: {
+                        ...movieData.data.translations,
+                        overviewTranslations: movieData.data.translations.overviewTranslations.map((translation: any) => ({
+                            overview: translation.overview,
+                            language: translation.language,
+                            isPrimary: translation.isPrimary
+                        }))
+                    }
+                };
                 return movie;
             });
 
