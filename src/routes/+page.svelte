@@ -38,7 +38,7 @@
         currentMovie = undefined;
     }
 
-    function handleFranchiseSelected(event: any) {
+    function handleFranchiseSelected(event: CustomEvent<{ id: number }>) {
         franchiseId = event.detail.id;
         goto(`/?franchiseId=${franchiseId}`);
     }
