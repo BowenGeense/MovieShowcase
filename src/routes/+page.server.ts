@@ -45,11 +45,13 @@ export const load: ServerLoad = async ({ url }) => {
                     ...movieData.data,
                     translations: {
                         ...movieData.data.translations,
-                        overviewTranslations: movieData.data.translations.overviewTranslations.map((translation: any) => ({
-                            overview: translation.overview,
-                            language: translation.language,
-                            isPrimary: translation.isPrimary
-                        }))
+                        overviewTranslations: movieData.data.translations.overviewTranslations
+                            ? movieData.data.translations.overviewTranslations.map((translation: any) => ({
+                                overview: translation.overview,
+                                language: translation.language,
+                                isPrimary: translation.isPrimary
+                            }))
+                            : []
                     }
                 };
                 return movie;

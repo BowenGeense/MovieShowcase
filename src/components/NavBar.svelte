@@ -1,20 +1,20 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
     import Sidebar from './Sidebar.svelte';
-    import img from '$lib/image/Nav_Bar_Logo_For_StarWars_Franchise.jpeg';
-    import img2 from '$lib/image/Nav_Bar_Logo_For_Marvel_Franchise.jpeg';
+    import StarWarsLogo from '$lib/image/Nav_Bar_Logo_For_StarWars_Franchise.jpeg';
+    import MarvelLogo from '$lib/image/Nav_Bar_Logo_For_Marvel_Franchise.jpeg';
 
     const dispatch = createEventDispatcher();
 
-    let logoPath = img;
+    let logoPath = StarWarsLogo;
     let sidebarOpen = false;
     let toggleButton;
 
     function selectFranchise(id: number) {
         if (id === 17) {
-            logoPath = img;
+            logoPath = StarWarsLogo;
         } else if (id === 4) {
-            logoPath = img2;
+            logoPath = MarvelLogo;
         }
         dispatch('franchiseSelected', { id });
     }
