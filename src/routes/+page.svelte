@@ -22,7 +22,6 @@
             error = null;
         } else {
             error = "No movies loaded";
-            console.log(error);
         }
     }
 
@@ -46,6 +45,11 @@
         goto(`/?franchiseId=${franchiseId}`);
     }
 
+    function handleShowDetail(movie: Movie) {
+        currentMovie = movie;
+        showDetail = true;
+    }
+
     onMount(() => {
         setTimeout(() => {
             nextMovie();
@@ -62,8 +66,7 @@
         {#if showDetail && currentMovie}
             <MovieDetail movie={currentMovie} on:backToGallery={backToGallery} />
         {/if}
-        <Gallery {movies} on:showDetail={(e) => { currentMovie = e.detail.movie; showDetail = true; }} />
-
+        <Gallery {movies} on:showDetail={(e) => handleShowDetail(e.detail.movie)} />
     </div>
 </main>
 

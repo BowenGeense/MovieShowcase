@@ -5,22 +5,22 @@
     export let movies: Movie[];
     const dispatch = createEventDispatcher();
 
-    function showDetail(movie: Movie, event: MouseEvent) {
-        const rect = (event.target as HTMLElement).getBoundingClientRect();
+    function showDetail(movie: Movie, target: EventTarget | null) {
+        const rect = (target as HTMLElement).getBoundingClientRect();
         const position = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
         dispatch('showDetail', { movie, position });
     }
 
     function handleKeydown(event: KeyboardEvent, movie: Movie) {
         if (event.key === 'Enter' || event.code === 'Space') {
-            showDetail(movie, event as unknown as MouseEvent);
+            showDetail(movie, event.target);
         }
     }
 </script>
 
 <div class="gallery">
     {#each movies as movie}
-        <div class="movie" role="button" tabindex="0" on:click={(event) => showDetail(movie, event)} on:keydown={(event) => handleKeydown(event, movie)}>
+        <div class="movie" role="button" tabindex="0" on:click={(event) => showDetail(movie, event.target)} on:keydown={(event) => handleKeydown(event, movie)}>
             <img src={movie.image} alt={movie.name} />
             <h2>{movie.name}</h2>
             <span>Released {movie.year}</span>

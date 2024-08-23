@@ -31,8 +31,8 @@
         <i class="fal fa-user nav-icon"></i>
         <i bind:this={toggleButton} class="fal fa-xmark nav-icon" role="button" tabindex="-1" on:click={toggleSidebar} on:keydown={handleKeydown}></i>
     </div>
-    <button on:click={() => handleSelectFranchise(17)}>Star Wars</button>
-    <button on:click={() => handleSelectFranchise(4)}>Marvel</button>
+    <button type="button" on:click={() => handleSelectFranchise(17)}>Star Wars</button>
+    <button type="button" on:click={() => handleSelectFranchise(4)}>Marvel</button>
 </div>
 
 <style>
