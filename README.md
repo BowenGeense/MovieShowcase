@@ -1,4 +1,4 @@
-# Project Name
+# Movie Showcase
 
 ## Prerequisites
 
