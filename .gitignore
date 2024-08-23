@@ -3,4 +3,5 @@
 .env.local
 .env.staging
 .svelte-kit/
+.DS_Store
 dist/
