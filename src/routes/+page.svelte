@@ -13,13 +13,16 @@
     let showDetail = false;
     let currentMovie: Movie | undefined;
     let franchiseId: number;
+    let error: string | null = null;
 
     $: {
         const { movies: loadedMovies } = $page.data;
         if (loadedMovies) {
             movies = loadedMovies;
+            error = null;
         } else {
-            console.log("No movies loaded");
+            error = "No movies loaded";
+            console.log(error);
         }
     }
 
@@ -53,10 +56,13 @@
 <main>
     <NavBar on:franchiseSelected={handleFranchiseSelected} />
     <div class="content">
+        {#if error}
+            <p class="error">{error}</p>
+        {/if}
         {#if showDetail && currentMovie}
             <MovieDetail movie={currentMovie} on:backToGallery={backToGallery} />
+            <Gallery {movies} on:showDetail={(e) => { currentMovie = e.detail.movie; showDetail = true; }} />
         {/if}
-        <Gallery {movies} on:showDetail={(e) => { currentMovie = e.detail.movie; showDetail = true; }} />
     </div>
 </main>
 
@@ -67,6 +73,11 @@
 
     .content {
         margin-top: 20px;
+    }
+
+    .error {
+        color: red;
+        font-weight: bold;
     }
 
     @media (max-width: 768px) {
