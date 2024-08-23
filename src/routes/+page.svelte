@@ -61,8 +61,9 @@
         {/if}
         {#if showDetail && currentMovie}
             <MovieDetail movie={currentMovie} on:backToGallery={backToGallery} />
-            <Gallery {movies} on:showDetail={(e) => { currentMovie = e.detail.movie; showDetail = true; }} />
         {/if}
+        <Gallery {movies} on:showDetail={(e) => { currentMovie = e.detail.movie; showDetail = true; }} />
+
     </div>
 </main>
 
