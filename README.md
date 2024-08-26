@@ -38,8 +38,8 @@ Before running the code, ensure you have the following installed:
 2. **Add the following environment variables to the `.env` file:**
 
     ```env
-    PUBLIC_API_BASE_URL=your_api_base_url
-    PUBLIC_BEARER=your_bearer_token
+    PRIVATE_API_BASE_URL=your_api_base_url
+    PRIVATE_BEARER=your_bearer_token
     ```
 
 ## Running the Project
