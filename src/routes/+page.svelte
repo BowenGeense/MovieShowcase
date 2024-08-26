@@ -4,14 +4,14 @@
     import MovieDetail from '../components/MovieDetail.svelte';
     import NavBar from '../components/NavBar.svelte';
     import '/src/global.css';
-    import type { Movie } from '../interfaces/Movie';
+    import type { MovieExtendedRecord } from '../sdk';
     import { page } from '$app/stores';
     import { goto } from '$app/navigation';
 
-    let movies: Movie[] = [];
+    let movies: MovieExtendedRecord[] = [];
     let currentIndex = -1;
     let showDetail = false;
-    let currentMovie: Movie | undefined;
+    let currentMovie: MovieExtendedRecord | undefined;
     let franchiseId: number;
     let error: string | null = null;
 
@@ -45,7 +45,7 @@
         goto(`/?franchiseId=${franchiseId}`);
     }
 
-    function handleShowDetail(movie: Movie) {
+    function handleShowDetail(movie: MovieExtendedRecord) {
         currentMovie = movie;
         showDetail = true;
     }

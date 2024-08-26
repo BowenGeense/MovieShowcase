@@ -1,19 +1,19 @@
 <script lang="ts">
     import { onMount, onDestroy } from 'svelte';
     import { createEventDispatcher } from 'svelte';
-    import type { Movie } from '../interfaces/Movie';
-    import type { OverviewTranslation } from '../interfaces/OverviewTranslation';
+    import type { MovieExtendedRecord } from '../sdk';
+    import type { Translation } from '../sdk';
 
-    export let movie: Movie;
+    export let movie: MovieExtendedRecord;
     const dispatch = createEventDispatcher();
 
     function backToGallery() {
         dispatch('backToGallery');
     }
 
-    const englishOverview = getEnglishOverview(movie.translations.overviewTranslations);
+    const englishOverview = getEnglishOverview(movie.translations?.overviewTranslations ?? []);
 
-    function getEnglishOverview(translations: OverviewTranslation[]) {
+    function getEnglishOverview(translations: Translation[]) {
         const englishTranslation = translations.find(translation => translation.language === 'eng');
         return englishTranslation ? englishTranslation.overview : 'Description not available';
     }
@@ -23,6 +23,7 @@
             backToGallery();
         }
     }
+
     onMount(() => {
         window.addEventListener('keydown', handleKeydown);
     });
