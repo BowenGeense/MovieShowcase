@@ -1,73 +1,58 @@
-import { PRIVATE_API_BASE_URL, PRIVATE_BEARER } from '$env/static/private';
+import { PRIVATE_BEARER } from '$env/static/private';
 import type { ServerLoad } from '@sveltejs/kit';
-import type { Movie } from '../interfaces/Movie';
-import type { Franchise } from '../interfaces/Franchise';
+import {Configuration, ListsApi, MoviesApi, GetMovieExtendedMetaEnum} from '../sdk';
+import type { ListsApiGetListExtendedRequest } from '../sdk';
+import type { Entity } from '../sdk';
 
 export const load: ServerLoad = async ({ url }) => {
-    const id = url.searchParams.get('franchiseId') || '17'; // Default to Star Wars
+  const id: number = Number(url.searchParams.get('franchiseId')) || 17; // Default to Star Wars
 
-    try {
-        const response = await fetch(`${PRIVATE_API_BASE_URL}lists/${id}/extended`, {
-            method: 'GET',
-            headers: {
-                'accept': 'application/json',
-                'Authorization': PRIVATE_BEARER
-            }
-        });
-
-        if (!response.ok) {
-            return {
-                status: response.status,
-                error: 'Failed to fetch franchise data'
-            };
-        }
-
-        const data = await response.json();
-        const franchise: Franchise = data.data;
-
-        const moviePromises = franchise.entities
-            .filter((entity: { movieId: number | null }) => entity.movieId !== null)
-            .map(async (entity: { movieId: number | null }) => {
-                const movieResponse = await fetch(`${PRIVATE_API_BASE_URL}movies/${entity.movieId}/extended?meta=translations`, {
-                    method: 'GET',
-                    headers: {
-                        'accept': 'application/json',
-                        'Authorization': PRIVATE_BEARER
-                    }
-                });
-
-                if (!movieResponse.ok) {
-                    console.error(`Failed to fetch movie data for ID ${entity.movieId}:`, movieResponse.statusText);
-                    return null;
-                }
-                const movieData = await movieResponse.json();
-                const movie: Movie = {
-                    ...movieData.data,
-                    translations: {
-                        ...movieData.data.translations,
-                        overviewTranslations: movieData.data.translations.overviewTranslations
-                            ? movieData.data.translations.overviewTranslations.map((translation: any) => ({
-                                overview: translation.overview,
-                                language: translation.language,
-                                isPrimary: translation.isPrimary
-                            }))
-                            : []
-                    }
-                };
-                return movie;
-            });
-
-        const movieResults = await Promise.all(moviePromises);
-        const movies = movieResults.filter(movie => movie !== null);
-
-        return {
-            movies
-        };
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        return {
-            status: 500,
-            error: 'Internal Server Error'
-        };
+  const config = new Configuration({
+    headers: {
+      'Authorization': `Bearer ${PRIVATE_BEARER}`
     }
+  });
+
+  const listsApi = new ListsApi(config);
+  const moviesApi = new MoviesApi(config);
+
+  try {
+    const response = await listsApi.getListExtended(
+        { id } as ListsApiGetListExtendedRequest
+    );
+
+    if (!response.status) {
+      console.error(`Failed to fetch movie data for ID ${response.data?.id}:`, response.status);
+      return null;
+    }
+    const moviePromises = response.data?.entities
+        ? response.data.entities
+            .filter((entity: Entity) => entity.movieId !== undefined)
+            .map(async (entity: Entity) => {
+              const movieExtendedResponse = await moviesApi.getMovieExtended({
+                id: entity.movieId as number,
+                meta: GetMovieExtendedMetaEnum.Translations
+              });
+
+              if (!movieExtendedResponse.status) {
+                console.error(`Failed to fetch movie data for ID ${entity.movieId}:`, movieExtendedResponse.status);
+                return null;
+              }
+              return movieExtendedResponse.data;
+            })
+        : [];
+
+    const movieResults = await Promise.all(moviePromises);
+    const movies = movieResults.filter(movie => movie !== null);
+
+    return {
+      movies
+    };
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return {
+      status: 500,
+      error: 'Internal Server Error'
+    };
+  }
 };
